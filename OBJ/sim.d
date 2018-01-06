@@ -36,3 +36,4 @@
 ..\obj\sim.o: ..\SYSTEM\delay\delay.h
 ..\obj\sim.o: ..\SYSTEM\time\time.h
 ..\obj\sim.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\obj\sim.o: ..\HARDWARE\LED\led.h

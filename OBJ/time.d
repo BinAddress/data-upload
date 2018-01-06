@@ -34,3 +34,4 @@
 ..\obj\time.o: ..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h
 ..\obj\time.o: ..\STM32F10x_FWLib\inc\misc.h
 ..\obj\time.o: ..\HARDWARE\SIM\sim.h
+..\obj\time.o: ..\HARDWARE\LED\led.h

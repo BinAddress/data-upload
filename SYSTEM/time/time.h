@@ -3,6 +3,6 @@
 
 #include "sys.h"
 
-void Timer2_Init(void);
+void TIM3_Init(u16 arr,u16 psc);
 
 #endif

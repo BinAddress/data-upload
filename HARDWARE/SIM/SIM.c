@@ -3,27 +3,31 @@
 #include "delay.h"
 #include "time.h"
 #include <string.h>
-
+#include "led.h"
 
 #define SIM_Max 200 					  //SIM缓存长度
 char SIM_Buf[SIM_Max] = {0};		
 u8 SIM_First_Int;
+static unsigned char tiems = 0;
+static unsigned char tiems_s = 0;
+static unsigned char tiems_flag = 0;
+
 const char *ip_string = "AT+CIPSTART=\"TCP\",\"123.206.216.144\",1234\r\n";	//IP登录服务器
-vu8 SIM_Timer_start;	//定时器0延时启动计数器
-u8 SIM_Times=0;
-u8 SIM_shijian=0;
+
+
 
 char Wait_CREG(void); //查询注册状态
 void CLR_Buf2(void);
 void Set_ATE0(void);
 void Connect_Server(void);
-void Second_AT_Command(char *b,char *a,u8 wait_time);
-u8 Find(char *a);
+char Second_AT_Command(char *b,char *a,u8 wait_time);
 void SIM_SendBit(char data);
 
 
 void SIM_Read_IRQ(char data)
 {
+		printf("%c",data);
+	
 		SIM_Buf[SIM_First_Int++] = data;  	  //将接收到的字符串存到缓存中
 		if(SIM_First_Int >= SIM_Max)       		//如果缓存满,将缓存指针指向缓存的首地址
 		{
@@ -31,18 +35,18 @@ void SIM_Read_IRQ(char data)
 		}
 }
 
-void SIM_TIME_IRQ(void)
+void SIM_Time_IRQ(void) 
 {
-		if(SIM_Timer_start)
-		SIM_Times++;
-		if(SIM_Times > SIM_shijian)
+	if(tiems_flag) //开始计数
+	{
+		if(++tiems >= 2)
 		{
-			SIM_Timer_start = 0;
-			SIM_Times = 0;
+			tiems = 0;
+			tiems_s++; //1s 累加1次
 		}
-		
-
+	}
 }
+
 
 void SIM_SendString(char *data)
 {
@@ -56,7 +60,7 @@ void SIM_SendString(char *data)
 void SIM_SendBit(char data)
 {
 		while(USART_GetFlagStatus(UART4, USART_FLAG_TC)==RESET); 
-		USART_SendData(UART4 ,data++);//发送当前字符	
+		USART_SendData(UART4 ,data);//发送当前字符	
 }
 
 
@@ -70,7 +74,7 @@ char SIM_Init(void)
 		
 	Set_ATE0(); //取消回显
 
-	//Connect_Server();//连接服务器
+	Connect_Server();//连接服务器
 	
 	//Second_AT_Command("AT+CIPSEND",">",2); //set send modo
 
@@ -102,15 +106,13 @@ char Wait_CREG(void)
 {
 	u8 i = 0;
 	u8 k;
-	CLR_Buf2(); //清空缓存
+	CLR_Buf2(); //清空缓存	        
+	SIM_SendString("AT+CREG?\r\n");
+	delay_ms(500);
 	
 	i = 0;
   while(i < 30)        			
 	{
-		CLR_Buf2();         
-		SIM_SendString("AT+CREG?\r\n");
-		delay_ms(1000);  	
-		
 		for(k=0;k<SIM_Max;k++)      			
 		{
 			if(SIM_Buf[k] == ':')
@@ -121,12 +123,20 @@ char Wait_CREG(void)
 				}
 				else
 				{
-					//未找到 1 或 5
+					if(k >= SIM_Max-1)
+					{       
+						SIM_SendString("AT+CREG?\r\n");
+						delay_ms(500);	
+					}
 				}
 			}
 			else
 			{
-			 //未找到 ：
+				if(k >= SIM_Max-1)
+				{       
+					SIM_SendString("AT+CREG?\r\n");
+					delay_ms(500);				
+				}
 			}
 		}
 		
@@ -179,13 +189,41 @@ void Connect_Server(void)
 {
 	SIM_SendString("AT+CIPCLOSE=1");	//关闭连接
   delay_ms(100);
-	Second_AT_Command("AT+CIPSHUT","SHUT OK",2);		//关闭移动场景
-	Second_AT_Command("AT+CGCLASS=\"B\"","OK",2);//设置GPRS移动台类别为B,支持包交换和数据交换 
-	Second_AT_Command("AT+CGDCONT=1,\"IP\",\"CMNET\"","OK",2);//设置PDP上下文,互联网接协议,接入点等信息
-	Second_AT_Command("AT+CGATT=1","OK",2);//附着GPRS业务
-	Second_AT_Command("AT+CIPCSGP=1,\"CMNET\"","OK",2);//设置为GPRS连接模式
-	Second_AT_Command("AT+CIPHEAD=1","OK",2);//设置接收数据显示IP头(方便判断数据来源,仅在单路连接有效)
-	Second_AT_Command((char*)ip_string,"OK",5);
+	if(!Second_AT_Command("AT+CIPSHUT","SHUT OK",20))//关闭移动场景
+	{
+		printf("SIM 关闭移动场景失败\r\n");
+	}
+	delay_ms(100);
+	if(!Second_AT_Command("AT+CGCLASS=\"B\"","OK",10))//设置GPRS移动台类别为B,支持包交换和数据交换 
+	{
+		printf("SIM 设置移动平台失败\r\n");
+	}	
+	delay_ms(100);
+	if(!Second_AT_Command("AT+CGDCONT=1,\"IP\",\"CMNET\"","OK",10))//设置PDP上下文,互联网接协议,接入点等信息
+	{
+		printf("SIM 设置PDP上下文失败\r\n");
+	}
+	delay_ms(100);
+	if(!Second_AT_Command("AT+CGATT=1","OK",10))//附着GPRS业务
+	{
+		printf("SIM 附着GPRS业务失败\r\n");
+	}
+	delay_ms(100);
+	if(!Second_AT_Command("AT+CIPCSGP=1,\"CMNET\"","OK",10))//设置为GPRS连接模式
+	{
+		printf("SIM 设置为GPRS连接模式失败\r\n");
+	}
+	delay_ms(100);
+	if(!Second_AT_Command("AT+CIPHEAD=1","OK",10))//设置接收数据显示IP头(方便判断数据来源,仅在单路连接有效)
+	{
+		printf("SIM 设置接收数据显示IP头失败\r\n");
+	}
+	delay_ms(100);
+	if(!Second_AT_Command((char*)ip_string,"OK",10)) //设置服务器IP
+	{
+		printf("SIM 设置服务器IP失败\r\n");
+	}
+
 	delay_ms(100);
 	CLR_Buf2();
 }
@@ -200,57 +238,60 @@ void Connect_Server(void)
 * 注意   : 
 *******************************************************************************/
 
-void Second_AT_Command(char *b,char *a,u8 wait_time)         
+char Second_AT_Command(char *b,char *a,u8 wait_time)         
 {
-	u8 i;
+
 	char *c;
 	c = b;										//保存字符串地址到c
 	CLR_Buf2(); 
-  i = 0;
-	while(i == 0)                    
+  
+	tiems_s = 0;
+	tiems_flag = 0;
+	while(1)                    
 	{
-		if(!Find(a)) 
+		if(strstr(SIM_Buf,a)==NULL) //未找到
 		{
-			if(SIM_Timer_start == 0)
-			{
-				b = c;							//将字符串地址给b
-				for (; *b!='\0';b++)
+				if(!tiems_flag) //如果没有开始计数
 				{
-					SIM_SendBit(*b);//UART2_SendData(*b);
+					b = c;						
+					SIM_SendString(b); //发送命令
+					SIM_SendString("\r\n");
+					
+					tiems = 0;
+					tiems_s = 0; //时间清零
+					tiems_flag = 1;		//开始计数			
 				}
-				
-				SIM_SendString("\r\n");	
-				SIM_Times = 0;
-				SIM_shijian = wait_time;
-				SIM_Timer_start = 1;
-		   }
+				else
+				{
+					//已经开始计数
+					if(tiems_s >= wait_time)
+					{
+						//超过时间
+						printf("time:%d\r\n",tiems_s);
+						tiems_s = 0;
+						tiems_flag = 0;
+						CLR_Buf2(); 
+						return 0;
+					}
+					else
+					{
+						//为超时
+					}
+				}
     }
  	  else
 		{
-			i = 1;
-			SIM_Timer_start = 0;
+			printf("time:%d\r\n",tiems_s);
+			tiems_s = 0;
+			tiems_flag = 0;			
+			CLR_Buf2(); 
+			return 1; //命令完成
 		}
 	}
-	
-	CLR_Buf2(); 
+
 }
 
-/*******************************************************************************
-* 函数名 : Find
-* 描述   : 判断缓存中是否含有指定的字符串
-* 输入   : 
-* 输出   : 
-* 返回   : unsigned char:1 找到指定字符，0 未找到指定字符 
-* 注意   : 
-*******************************************************************************/
 
-u8 Find(char *a)
-{ 
-  if(strstr(SIM_Buf,a)!=NULL)
-	    return 1;
-	else
-			return 0;
-}
 
 
 

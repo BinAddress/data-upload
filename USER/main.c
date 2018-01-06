@@ -13,7 +13,8 @@
  {
 	delay_init();	    	 //延时函数初始化	  
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
-	
+	LED_Init();
+	 
 	uart1_init(9600);//debug
 	uart4_init(9600);//SIM
 
@@ -21,14 +22,14 @@
 	
 	//I2C1_Init(); //BMP180+6050
 	
-	Timer2_Init();
+	TIM3_Init(4999,7199);//SIM 500ms 中断一次
 	 
 	printf("System Init\r\n");
 	
-	SIM_Init(); 
+	SIM_Init();
 	//BMP180_init();
 	 
-	LED_Init();
+	
 	
 	printf("Devices Init\r\n");
 		 
