@@ -3,6 +3,7 @@
 #include "stm32f10x_conf.h"
 #include "delay.h"
 #include "gps.h"
+#include "sim.h"
 
 #pragma import(__use_no_semihosting)             
 //标准库需要的支持函数                 
@@ -213,14 +214,16 @@ void UART4_IRQHandler(void)
 	char res;
 	if(USART_GetITStatus(UART4, USART_IT_RXNE) != RESET) 
 		{
-			res =USART_ReceiveData(UART4);
-			printf("%c",res);				
+			res =USART_ReceiveData(UART4);	
+			
+			SIM_Read_IRQ(res);
+			
     } 
 } 
 
 void uart4_send(char *date)
 {      
-	while(*date != '\0')//检测字符串结束符
+	while(*date)//检测字符串结束符
 	{
 		while(USART_GetFlagStatus(UART4, USART_FLAG_TC)==RESET); 
 		USART_SendData(UART4 ,*date++);//发送当前字符

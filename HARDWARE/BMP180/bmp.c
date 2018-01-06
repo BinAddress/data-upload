@@ -37,7 +37,7 @@ void BMP180_init(void)
 short BMP180_ReadTwoByte(u8 ReadAddr)
 {
 		u8 date[2];
-    short temp;     
+    short temp;
 		I2C1_Read_Len(BMP180_ADDR,ReadAddr,2,date);
 		temp = date[0]<<8|date[1];
     return temp;                                                    

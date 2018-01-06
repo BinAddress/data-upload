@@ -34,3 +34,4 @@
 ..\obj\usart.o: ..\STM32F10x_FWLib\inc\misc.h
 ..\obj\usart.o: ..\SYSTEM\delay\delay.h
 ..\obj\usart.o: ..\HARDWARE\GPS\gps.h
+..\obj\usart.o: ..\HARDWARE\SIM\sim.h

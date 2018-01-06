@@ -38,3 +38,5 @@
 ..\obj\main.o: ..\HARDWARE\GPS\gps.h
 ..\obj\main.o: ..\SYSTEM\iic\iic.h
 ..\obj\main.o: ..\HARDWARE\BMP180\bmp.h
+..\obj\main.o: ..\HARDWARE\SIM\sim.h
+..\obj\main.o: ..\SYSTEM\time\time.h
