@@ -117,8 +117,8 @@ void UART5_IRQHandler(void)
 	if(USART_GetITStatus(UART5, USART_IT_RXNE) != RESET) 
 		{
 			res =USART_ReceiveData(UART5);
-			uart1_send_bit(res);
-			//GPS_Send_IRQ(res);
+			//uart1_send_bit(res);
+			GPS_Send_IRQ(res);
 			
     } 
 }

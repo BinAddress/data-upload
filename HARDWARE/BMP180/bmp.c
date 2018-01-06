@@ -127,7 +127,7 @@ void Convert_UncompensatedToTrue(long UT,long UP)
  
     True_Altitude = 44330*(1-pow((P/101325.0),(1.0/5.255)));            
     
-		printf("True_Temp£º%f	True_Press:%f\r\n",True_Temp,True_Press);
+		//printf("True_Temp£º%f	True_Press:%f\r\n",True_Temp,True_Press);
 		
 }
 
