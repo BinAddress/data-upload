@@ -14,19 +14,17 @@ static unsigned char tiems_flag = 0;
 
 const char *ip_string = "AT+CIPSTART=\"TCP\",\"123.206.216.144\",1234\r\n";	//IP登录服务器
 
-
-
 char Wait_CREG(void); //查询注册状态
 void CLR_Buf2(void);
 void Set_ATE0(void);
-void Connect_Server(void);
-char Second_AT_Command(char *b,char *a,u8 wait_time);
+char Connect_Server(void);
+char Second_AT_Command(char *b,char *a,u8 wait_time);//发送命令
+char Second_AT_Command_3Ci(char *b,char *a,u8 wait_time,char num);//发送命令发送多次
 void SIM_SendBit(char data);
-
 
 void SIM_Read_IRQ(char data)
 {
-		printf("%c",data);
+		//printf("%c",data);
 	
 		SIM_Buf[SIM_First_Int++] = data;  	  //将接收到的字符串存到缓存中
 		if(SIM_First_Int >= SIM_Max)       		//如果缓存满,将缓存指针指向缓存的首地址
@@ -74,7 +72,10 @@ char SIM_Init(void)
 		
 	Set_ATE0(); //取消回显
 
-	Connect_Server();//连接服务器
+	if(!Connect_Server())//连接服务器
+	{
+		printf("SIM 连接服务器失败\r\n");
+	}
 	
 	//Second_AT_Command("AT+CIPSEND",">",2); //set send modo
 
@@ -185,58 +186,75 @@ void Set_ATE0(void)
 * 返回   : 
 * 注意   : 
 *******************************************************************************/
-void Connect_Server(void)
+char Connect_Server(void)
 {
 	SIM_SendString("AT+CIPCLOSE=1");	//关闭连接
-  delay_ms(100);
-	if(!Second_AT_Command("AT+CIPSHUT","SHUT OK",20))//关闭移动场景
-	{
+	
+	if(!Second_AT_Command_3Ci("AT+CIPSHUT","SHUT OK",20,3))//关闭移动场景
+	{		
 		printf("SIM 关闭移动场景失败\r\n");
+		return 0;
 	}
-	delay_ms(100);
-	if(!Second_AT_Command("AT+CGCLASS=\"B\"","OK",10))//设置GPRS移动台类别为B,支持包交换和数据交换 
+	
+	if(!Second_AT_Command_3Ci("AT+CGCLASS=\"B\"","OK",10,3))//设置GPRS移动台类别为B,支持包交换和数据交换 
 	{
 		printf("SIM 设置移动平台失败\r\n");
+		return 0;
 	}	
-	delay_ms(100);
-	if(!Second_AT_Command("AT+CGDCONT=1,\"IP\",\"CMNET\"","OK",10))//设置PDP上下文,互联网接协议,接入点等信息
-	{
+	
+	if(!Second_AT_Command_3Ci("AT+CGDCONT=1,\"IP\",\"CMNET\"","OK",10,3))//设置PDP上下文,互联网接协议,接入点等信息
+	{		
 		printf("SIM 设置PDP上下文失败\r\n");
+		return 0;
 	}
-	delay_ms(100);
-	if(!Second_AT_Command("AT+CGATT=1","OK",10))//附着GPRS业务
-	{
+	
+	if(!Second_AT_Command_3Ci("AT+CGATT=1","OK",10,3))//附着GPRS业务
+	{		
 		printf("SIM 附着GPRS业务失败\r\n");
+		return 0;
 	}
-	delay_ms(100);
-	if(!Second_AT_Command("AT+CIPCSGP=1,\"CMNET\"","OK",10))//设置为GPRS连接模式
-	{
+	
+	if(!Second_AT_Command_3Ci("AT+CIPCSGP=1,\"CMNET\"","OK",10,3))//设置为GPRS连接模式
+	{		
 		printf("SIM 设置为GPRS连接模式失败\r\n");
+		return 0;
 	}
-	delay_ms(100);
-	if(!Second_AT_Command("AT+CIPHEAD=1","OK",10))//设置接收数据显示IP头(方便判断数据来源,仅在单路连接有效)
-	{
+	
+	if(!Second_AT_Command_3Ci("AT+CIPHEAD=1","OK",10,3))//设置接收数据显示IP头(方便判断数据来源,仅在单路连接有效)
+	{		
 		printf("SIM 设置接收数据显示IP头失败\r\n");
+		return 0;
 	}
-	delay_ms(100);
-	if(!Second_AT_Command((char*)ip_string,"OK",10)) //设置服务器IP
+	
+	if(!Second_AT_Command_3Ci((char*)ip_string,"OK",10,3)) //设置服务器IP
 	{
 		printf("SIM 设置服务器IP失败\r\n");
+		return 0;
 	}
 
 	delay_ms(100);
 	CLR_Buf2();
+	return 1;
 }
 
-
-/*******************************************************************************
-* 函数名 : Second_AT_Command
-* 描述   : 发送AT指令函数
-* 输入   : 发送数据的指针、发送等待时间(单位：S)
-* 输出   : 
-* 返回   : 
-* 注意   : 
-*******************************************************************************/
+// 发送失败，则重新发送
+char Second_AT_Command_3Ci(char *b,char *a,u8 wait_time,char num)     
+{
+	char i;
+	
+	i = 0;
+	while(i <= num)
+	{
+		delay_ms(100);
+		if(Second_AT_Command(b,a,wait_time))
+		{
+			return 1;
+		}		
+		i++;
+	}
+	
+	return 0;
+}
 
 char Second_AT_Command(char *b,char *a,u8 wait_time)         
 {
@@ -267,7 +285,7 @@ char Second_AT_Command(char *b,char *a,u8 wait_time)
 					if(tiems_s >= wait_time)
 					{
 						//超过时间
-						printf("time:%d\r\n",tiems_s);
+						//printf("time:%d\r\n",tiems_s);
 						tiems_s = 0;
 						tiems_flag = 0;
 						CLR_Buf2(); 
@@ -281,7 +299,7 @@ char Second_AT_Command(char *b,char *a,u8 wait_time)
     }
  	  else
 		{
-			printf("time:%d\r\n",tiems_s);
+			//printf("time:%d\r\n",tiems_s);
 			tiems_s = 0;
 			tiems_flag = 0;			
 			CLR_Buf2(); 
