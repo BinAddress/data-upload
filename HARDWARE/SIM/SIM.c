@@ -75,9 +75,10 @@ char SIM_Init(void)
 	if(!Connect_Server())//连接服务器
 	{
 		printf("SIM 连接服务器失败\r\n");
+		return 0;
 	}
 	
-	//Second_AT_Command("AT+CIPSEND",">",2); //set send modo
+	Second_AT_Command("AT+CIPSEND",">",2); //set send modo
 
 	return 0xff;
 }

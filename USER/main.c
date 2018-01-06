@@ -82,7 +82,8 @@
 			Rc522_Init();		
 		}
 		
-		if(Read_Card_ID()) //检测是否刷卡
+		//检测是否刷卡
+		if(Read_Card_ID()) 
 		{
 			Can_Send_Msg(can_send_buf,8);//通知遥控中转
 			
@@ -97,9 +98,6 @@
 			printf("%s\r\n",sim_send_buf);
 			
 		}
-
-
-		
 		
 	}
 	
