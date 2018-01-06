@@ -46,14 +46,14 @@ char Main_Flag = 0;
 
 char LED_Flag = 0;
 
-
 void Main_Time(void)
 {
 		if(++main_times >= 6)
 		{
 			main_times = 0;
 			Main_Flag = 1;
+			LED_Flag = 1;
 		}
 		
-		LED_Flag = 1;
+		
 }

@@ -24,6 +24,7 @@ u8 CAN_Mode_Init(u8 tsjw,u8 tbs2,u8 tbs1,u16 brp,u8 mode)
 	  GPIO_InitTypeDef GPIO_InitStructure; 
 	  CAN_InitTypeDef        CAN_InitStructure;
  	  CAN_FilterInitTypeDef  CAN_FilterInitStructure;
+	
 #if CAN_RX0_INT_ENABLE 
    	NVIC_InitTypeDef  NVIC_InitStructure;
 #endif
@@ -111,7 +112,11 @@ u8 Can_Send_Msg(u8* msg,u8 len)
   TxMessage.Data[i]=msg[i];			          
   mbox= CAN_Transmit(CAN1, &TxMessage);   
   i=0;
+	
+	
   while((CAN_TransmitStatus(CAN1, mbox)==CAN_TxStatus_Failed)&&(i<0XFFF))i++;	//µÈ´ý·¢ËÍ½áÊø
+	
+	
   if(i>=0XFFF)return 1;
   return 0;		
 

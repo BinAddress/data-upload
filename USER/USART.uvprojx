@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER,USE_FULL_ASSERT</Define>
               <Undefine></Undefine>
-              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\KEY;..\SYSTEM\dma;..\HARDWARE\GPS;..\HARDWARE\BMP180;..\SYSTEM\iic</IncludePath>
+              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\KEY;..\SYSTEM\dma;..\HARDWARE\GPS;..\HARDWARE\BMP180;..\SYSTEM\iic;..\HARDWARE\SIM;..\SYSTEM\time;..\HARDWARE\RFID;..\SYSTEM\CAN</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -448,6 +448,16 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\BMP180\bmp.c</FilePath>
             </File>
+            <File>
+              <FileName>SIM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\SIM\SIM.c</FilePath>
+            </File>
+            <File>
+              <FileName>rc522.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\RFID\rc522.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -477,6 +487,16 @@
               <FileName>iic.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\SYSTEM\iic\iic.c</FilePath>
+            </File>
+            <File>
+              <FileName>time.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\time\time.c</FilePath>
+            </File>
+            <File>
+              <FileName>can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\CAN\can.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -522,6 +542,21 @@
               <FileName>stm32f10x_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\STM32F10x_FWLib\src\stm32f10x_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32F10x_FWLib\src\stm32f10x_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32F10x_FWLib\src\stm32f10x_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32F10x_FWLib\src\stm32f10x_can.c</FilePath>
             </File>
           </Files>
         </Group>

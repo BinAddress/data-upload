@@ -11,6 +11,7 @@ u8 SIM_First_Int;
 static unsigned char tiems = 0;
 static unsigned char tiems_s = 0;
 static unsigned char tiems_flag = 0;
+static char sim_ling_flag = 0; //连接成功
 
 const char *ip_string = "AT+CIPSTART=\"TCP\",\"123.206.216.144\",1234\r\n";	//IP登录服务器
 
@@ -79,7 +80,8 @@ char SIM_Init(void)
 	}
 	
 	Second_AT_Command("AT+CIPSEND",">",2); //set send modo
-
+	
+	sim_ling_flag = 0xff;
 	return 0xff;
 }
 
@@ -87,12 +89,14 @@ char SIM_Init(void)
 
 char Send_TCP_IP(char *date)
 {
-	
-	delay_ms(1000);
-	Second_AT_Command("AT+CIPSEND",">",2); //set send modo
-	SIM_SendString(date);	
-	SIM_SendString("\32\0");	
-	
+	if(sim_ling_flag != 0) //连接成功
+	{
+		delay_ms(1000);
+		Second_AT_Command("AT+CIPSEND",">",2); //set send modo
+		SIM_SendString(date);	
+		SIM_SendString("\32\0");		
+	}
+
 	return 0;
 }
 

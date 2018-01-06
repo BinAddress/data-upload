@@ -42,4 +42,5 @@
 ..\obj\main.o: ..\SYSTEM\time\time.h
 ..\obj\main.o: ..\HARDWARE\RFID\rc522.h
 ..\obj\main.o: ..\SYSTEM\CAN\can.h
+..\obj\main.o: ..\HARDWARE\MPU6050\mpu6050.h
 ..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
