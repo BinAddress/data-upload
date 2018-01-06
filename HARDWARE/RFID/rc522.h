@@ -126,6 +126,10 @@
 
 #define SPIReadByte()	SPIWriteByte(0)
 
+
+extern unsigned char RFID_ID[16];
+
+
 u8 SPIWriteByte(u8 byte);
 
 void SPI2_Init(void);

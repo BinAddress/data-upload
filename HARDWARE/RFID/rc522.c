@@ -737,8 +737,8 @@ char Rc522_Read(unsigned char address, unsigned char *date, unsigned char len)
 
 char Read_Card_ID(void)
 {
-	char bao_string[30];
-	int i;
+//	char bao_string[30];
+//	int i;
 	
 	char rc522_flag = 0;
 	char rc522_stust = 0; //¿¨Æ¬×´Ì¬
@@ -750,19 +750,7 @@ char Read_Card_ID(void)
 			if(rc522_flag == 0) //¿¨Æ¬´æÔÚ£¬¶ÁÈ¡³É¹¦
 			{				
 				rc522_flag = 1;
-				
-				//UID
-				strcpy(bao_string,"UID,");				
-				for(i = 0; i < 6; i++)
-				{
-					bao_string[4+i] = RFID_ID[i]+0x30;
-				}
-				
-				bao_string[10] = 0;				
-				Send_TCP_IP(bao_string);
-				printf("%s\r\n",bao_string);
-				
-				
+								
 				return 1;
 			}
 			else

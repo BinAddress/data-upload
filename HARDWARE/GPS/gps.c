@@ -1,6 +1,7 @@
 #include "gps.h"
 #include "usart.h"	  
 #include "delay.h"
+#include "sim.h"
 #include <string.h>
 
 #define GPS_REC_LEN  			200  	//定义最大接收字节数 200
@@ -117,57 +118,33 @@ void printGpsBuffer(void)
 	{
 		Save_Data.isParseData = false;
 		
-//		printf("UTCTime,");
-//		printf(Save_Data.UTCTime);		
-//		printf("\r\n");
-		
 		strcpy(gpsbuf,"UTCTime,");
 		strcpy(&gpsbuf[8],Save_Data.UTCTime);
-//		Send_TCP_IP(gpsbuf);		
+		Send_TCP_IP(gpsbuf);		
 		printf("%s\r\n",gpsbuf);
 
 		if(Save_Data.isUsefull)
 		{
 			Save_Data.isUsefull = false;
-			
-//			printf("latitude,");
-//			printf(Save_Data.latitude);
-//			printf("\r\n");
-			
-			
+				
 			strcpy(gpsbuf,"latitude,");
 			strcpy(&gpsbuf[9],Save_Data.latitude);
-//			Send_TCP_IP(gpsbuf);
+			Send_TCP_IP(gpsbuf);
 			printf("%s\r\n",gpsbuf);			
 
-//			printf("N_S,");
-//			printf(Save_Data.N_S);
-//			printf("\r\n");
-			
-			
 			strcpy(gpsbuf,"N_S,");
 			strcpy(&gpsbuf[4],Save_Data.N_S);
-//			Send_TCP_IP(gpsbuf);
+			Send_TCP_IP(gpsbuf);
 			printf("%s\r\n",gpsbuf);			
-			
-
-//			printf("longitude,");
-//			printf(Save_Data.longitude);
-//			printf("\r\n");
-
-			
+					
 			strcpy(gpsbuf,"longitude,");
 			strcpy(&gpsbuf[10],Save_Data.longitude);
-//			Send_TCP_IP(gpsbuf);
+			Send_TCP_IP(gpsbuf);
 			printf("%s\r\n",gpsbuf);	
-
-//			printf("E_W,");
-//			printf(Save_Data.E_W);
-//			printf("\r\n");
 			
 			strcpy(gpsbuf,"E_W,");
 			strcpy(&gpsbuf[4],Save_Data.E_W);
-//			Send_TCP_IP(gpsbuf);
+			Send_TCP_IP(gpsbuf);
 			printf("%s\r\n",gpsbuf);
 			
 		}
