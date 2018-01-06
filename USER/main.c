@@ -31,7 +31,7 @@
 		
 		//BMP180_Read();
 		
-		delay_ms(500);
+		//delay_ms(500);
 		
 	}
 	
