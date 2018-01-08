@@ -15,9 +15,12 @@
 
 #define FID "FID,ADN23434S"  //飞机ID
 
+u8 can_send_buf[10] = {0};
+
+void Data_OK(void);
+	
  int main(void)
  {
-	u8 can_send_buf[10] = {0};
 	char sim_send_buf[50] = {0};
 	int i = 0;
 	char user_card_flag = 0;
@@ -45,8 +48,40 @@
 	SIM_Init();
 	
 	printf("Devices Init\r\n");
-		 
- 	while(1)
+	
+	
+	while(1) //检测用户是否刷卡
+	{
+		if(Read_Card_ID())
+		{
+			Data_OK();//允许遥控器传输数据
+			
+			user_card_flag = 1;
+			
+			//UID 上传
+			strcpy(sim_send_buf,"UID,");				
+			for(i = 0; i < 6; i++)
+			{
+				sim_send_buf[4+i] = RFID_ID[i]+0x30;
+			}
+			sim_send_buf[10] = 0;				
+			
+			printf("%s\r\n",sim_send_buf);
+			
+			break;
+		}
+		
+		if(Main_Flag) //每隔 3S 初始化
+		{
+			Main_Flag = 0;
+			LED = !LED;
+			Rc522_Init();
+		}
+		
+	}
+	
+	
+ 	while(1) //数据上传
 	{
 		
 		if(LED_Flag)
@@ -115,16 +150,7 @@
 		//检测是否刷卡
 		if(Read_Card_ID()) 
 		{
-			can_send_buf[0] = 0xFF;
-			can_send_buf[1] = 0xAA;
-			can_send_buf[2] = 0xBB;
-			can_send_buf[3] = 0x00;
-			can_send_buf[4] = 0x00;
-			can_send_buf[5] = 0x00;
-			can_send_buf[6] = 0x00;
-			can_send_buf[7] = 0xFD;
-			
-			Can_Send_Msg(can_send_buf,8);//通知遥控中转
+			Data_OK();//允许遥控器传输数据
 			
 			user_card_flag = 1;
 			
@@ -144,3 +170,19 @@
 	
  }
 
+ //允许遥控器传输数据
+ void Data_OK(void)
+ {
+		
+
+		can_send_buf[0] = 0xFF;
+		can_send_buf[1] = 0xAA;
+		can_send_buf[2] = 0xBB;
+		can_send_buf[3] = 0x00;
+		can_send_buf[4] = 0x00;
+		can_send_buf[5] = 0x00;
+		can_send_buf[6] = 0x00;
+		can_send_buf[7] = 0xFD;
+
+		Can_Send_Msg(can_send_buf,8);//通知遥控中转
+ }
