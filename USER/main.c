@@ -20,6 +20,9 @@
 	u8 can_send_buf[10] = {0};
 	char sim_send_buf[50] = {0};
 	int i = 0;
+	char user_card_flag = 0;
+	
+	user_card_flag = 0;
 	
 	delay_init();	    	 //延时函数初始化	  
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
@@ -80,7 +83,12 @@
 			printf("%s\r\n",sim_send_buf);		
 
 			//GPS
-			printGpsBuffer();			
+			printGpsBuffer();	
+
+			if(user_card_flag)
+			{
+					Can_Send_Msg(can_send_buf,8);//通知遥控中转
+			}
 
 //			//Roll
 //			strcpy(sim_send_buf,"Roll,");
@@ -117,6 +125,8 @@
 			can_send_buf[7] = 0xFD;
 			
 			Can_Send_Msg(can_send_buf,8);//通知遥控中转
+			
+			user_card_flag = 1;
 			
 			//UID 上传
 			strcpy(sim_send_buf,"UID,");				
