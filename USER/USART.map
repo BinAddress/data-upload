@@ -19,9 +19,9 @@ Section Cross References
     main.o(.text) refers to time.o(.text) for TIM3_Init
     main.o(.text) refers to noretval__2printf.o(.text) for __2printf
     main.o(.text) refers to led.o(.text) for LED_Init
-    main.o(.text) refers to bmp.o(.text) for BMP180_init
-    main.o(.text) refers to sim.o(.text) for SIM_Init
     main.o(.text) refers to strcpy.o(.text) for strcpy
+    main.o(.text) refers to sim.o(.text) for SIM_Init
+    main.o(.text) refers to bmp.o(.text) for BMP180_init
     main.o(.text) refers to gps.o(.text) for Read_GPS
     main.o(.text) refers to f2d.o(x$fpl$f2d) for __aeabi_f2d
     main.o(.text) refers to noretval__2sprintf.o(.text) for __2sprintf
@@ -1172,7 +1172,7 @@ Image Symbol Table
     __rt_exit_prels_1                        0x080001ed   Thumb Code     0  rtexit2.o(.ARM.Collect$$rtexit$$00000002)
     __rt_exit_exit                           0x080001f1   Thumb Code     0  rtexit2.o(.ARM.Collect$$rtexit$$00000004)
     Data_OK                                  0x080001f9   Thumb Code    40  main.o(.text)
-    main                                     0x08000221   Thumb Code   462  main.o(.text)
+    main                                     0x08000221   Thumb Code   464  main.o(.text)
     NMI_Handler                              0x0800045d   Thumb Code     2  stm32f10x_it.o(.text)
     HardFault_Handler                        0x0800045f   Thumb Code     4  stm32f10x_it.o(.text)
     MemManage_Handler                        0x08000463   Thumb Code     4  stm32f10x_it.o(.text)
@@ -1924,7 +1924,7 @@ Image component sizes
        660        116          0          2        351       2089   gps.o
        944         14          0          0          0       3713   iic.o
         48          4          0          0          0        467   led.o
-       612        110          0          0         10     270266   main.o
+       612        108          0          0         10     270322   main.o
        468         56          0          0          0       1929   misc.o
       2328         82          0         12         16       8839   rc522.o
       1200        436         43         12        200       3921   sim.o
@@ -1942,7 +1942,7 @@ Image component sizes
        784         40          0          4          0       4860   usart.o
 
     ----------------------------------------------------------------------
-     38376       2522        380        124       2116     379994   Object Totals
+     38376       2520        380        124       2116     380050   Object Totals
          0          0         32          0          0          0   (incl. Generated)
          2          0          1          3          3          0   (incl. Padding)
 
@@ -2056,9 +2056,9 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     50282       3196        762        124       2212     381466   Grand Totals
-     50282       3196        762        124       2212     381466   ELF Image Totals
-     50282       3196        762        124          0          0   ROM Totals
+     50282       3194        762        124       2212     381522   Grand Totals
+     50282       3194        762        124       2212     381522   ELF Image Totals
+     50282       3194        762        124          0          0   ROM Totals
 
 ==============================================================================
 

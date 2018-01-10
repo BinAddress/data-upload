@@ -24,6 +24,7 @@ void Data_OK(void);
 	char sim_send_buf[50] = {0};
 	int i = 0;
 	char user_card_flag = 0;
+	char user_card_start_flag = 0;
 	
 	user_card_flag = 0;
 	
@@ -40,16 +41,9 @@ void Data_OK(void);
 	TIM3_Init(4999,7199);//SIM 500ms 中断一次
 	 
 	printf("System Init\r\n");
-	 
 	LED_Init();
-	BMP180_init();
 	Rc522_Init();
-//	MPU_Init();
-	SIM_Init();
-	
-	printf("Devices Init\r\n");
-	
-	
+
 	while(1) //检测用户是否刷卡
 	{
 		if(Read_Card_ID())
@@ -57,14 +51,17 @@ void Data_OK(void);
 			Data_OK();//允许遥控器传输数据
 			
 			user_card_flag = 1;
+			user_card_start_flag = 1;
 			
-			//UID 上传
+			//UID 串口打印
 			strcpy(sim_send_buf,"UID,");				
 			for(i = 0; i < 6; i++)
 			{
 				sim_send_buf[4+i] = RFID_ID[i]+0x30;
 			}
-			sim_send_buf[10] = 0;				
+			sim_send_buf[10] = 0;
+
+			PcdAntennaOff();	//关闭天线		
 			
 			printf("%s\r\n",sim_send_buf);
 			
@@ -76,10 +73,18 @@ void Data_OK(void);
 			Main_Flag = 0;
 			LED = !LED;
 			Rc522_Init();
+			if(user_card_start_flag)
+			{
+				PcdAntennaOff();	//关闭天线	
+			}
 		}
 		
 	}
 	
+	SIM_Init();
+	BMP180_init();
+	//	MPU_Init();
+	printf("Devices Init\r\n");
 	
  	while(1) //数据上传
 	{
@@ -122,7 +127,18 @@ void Data_OK(void);
 
 			if(user_card_flag)
 			{
-					Can_Send_Msg(can_send_buf,8);//通知遥控中转
+				Can_Send_Msg(can_send_buf,8);//通知遥控中转
+				
+				//UID 上传
+				strcpy(sim_send_buf,"UID,");				
+				for(i = 0; i < 6; i++)
+				{
+					sim_send_buf[4+i] = RFID_ID[i]+0x30;
+				}
+				sim_send_buf[10] = 0;				
+				Send_TCP_IP(sim_send_buf);
+				printf("%s\r\n",sim_send_buf);
+				
 			}
 
 //			//Roll
@@ -144,27 +160,29 @@ void Data_OK(void);
 //			printf("%s\r\n",sim_send_buf);
 			
 			//init ID Card
-			Rc522_Init();		
+//			Rc522_Init();		
 		}
 		
-		//检测是否刷卡
-		if(Read_Card_ID()) 
-		{
-			Data_OK();//允许遥控器传输数据
-			
-			user_card_flag = 1;
-			
-			//UID 上传
-			strcpy(sim_send_buf,"UID,");				
-			for(i = 0; i < 6; i++)
-			{
-				sim_send_buf[4+i] = RFID_ID[i]+0x30;
-			}
-			sim_send_buf[10] = 0;				
-			Send_TCP_IP(sim_send_buf);
-			printf("%s\r\n",sim_send_buf);
-			
-		}
+//		//检测是否刷卡
+//		if(Read_Card_ID() || user_card_start_flag) 
+//		{
+//			user_card_start_flag = 0;
+//			
+//			Data_OK();//允许遥控器传输数据
+//			
+//			user_card_flag = 1;
+//			
+//			//UID 上传
+//			strcpy(sim_send_buf,"UID,");				
+//			for(i = 0; i < 6; i++)
+//			{
+//				sim_send_buf[4+i] = RFID_ID[i]+0x30;
+//			}
+//			sim_send_buf[10] = 0;				
+//			Send_TCP_IP(sim_send_buf);
+//			printf("%s\r\n",sim_send_buf);
+//			
+//		}
 		
 	}
 	
