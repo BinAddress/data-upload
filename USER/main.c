@@ -11,6 +11,7 @@
 #include "rc522.h"
 #include "can.h"
 #include "mpu6050.h"
+#include "sound.h"
 #include <string.h>
 
 #define FID "FID,ADN23434S"  //飞机ID
@@ -32,6 +33,7 @@ void Data_OK(void);
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
 	
 	uart1_init(9600);//debug
+	uart2_init(9600);//语音模块
 	uart4_init(9600);//SIM
 	uart5_init(9600);//GPS
 	
@@ -39,10 +41,22 @@ void Data_OK(void);
 	SPI2_Init();
 	CAN_Mode_Init(CAN_SJW_1tq,CAN_BS2_3tq,CAN_BS1_8tq,3,CAN_Mode_Normal);//CAN普通模式初始化, 波特率500Kbps 
 	TIM3_Init(4999,7199);//SIM 500ms 中断一次
-	 
+	
+	sound_broadcast_files_file(0x01,0x01);	
+	
 	printf("System Init\r\n");
 	LED_Init();
 	Rc522_Init();
+	
+	delay_ms(1000); //等待语音读取完成
+	delay_ms(1000);
+	delay_ms(1000);
+	delay_ms(1000);
+	delay_ms(1000);
+	delay_ms(1000);
+	delay_ms(1000);
+		
+	sound_broadcast_files_file(0x01,0x02);
 
 	while(1) //检测用户是否刷卡
 	{
@@ -63,6 +77,7 @@ void Data_OK(void);
 
 			PcdAntennaOff();	//关闭天线		
 			
+			sound_broadcast_files_file(0x01,0x03);
 			printf("%s\r\n",sim_send_buf);
 			
 			break;

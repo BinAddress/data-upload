@@ -11,11 +11,14 @@
 
 //如果想串口中断接收，请不要注释以下宏定义
 void uart1_init(u32 bound);
+void uart2_init(u32 bound);
 void uart5_init(u32 bound);
 void uart4_init(u32 bound);
 
 void uart1_send_bit(char data);
+void uart2_send_bit(char date);
 
+void uart2_send(char *date);
 void uart4_send(char *date);
 
 #endif
