@@ -32,4 +32,6 @@ char Read_GPS(void); //调用该函数更新GPS数据
 
 void GPS_Send_IRQ(char data);
 
+double GSP_Data_Change(char *data);// 经纬度转换
+
 #endif

@@ -16,17 +16,17 @@
 
 #define FID "FID,ADN23434S"  //飞机ID
 
-u8 can_send_buf[10] = {0};
+u8 can_send_buf[9] = {0};
 
 void Data_OK(void);
 	
  int main(void)
  {
-	char sim_send_buf[50] = {0};
+	char sim_send_buf[40] = {0};
 	int i = 0;
 	char user_card_flag = 0;
 	char user_card_start_flag = 0;
-	
+		
 	user_card_flag = 0;
 	
 	delay_init();	    	 //延时函数初始化	  
@@ -41,14 +41,14 @@ void Data_OK(void);
 	SPI2_Init();
 	CAN_Mode_Init(CAN_SJW_1tq,CAN_BS2_3tq,CAN_BS1_8tq,3,CAN_Mode_Normal);//CAN普通模式初始化, 波特率500Kbps 
 	TIM3_Init(4999,7199);//SIM 500ms 中断一次
-	
+				
 	sound_broadcast_files_file(0x01,0x01);	
 	
 	printf("System Init\r\n");
 	LED_Init();
 	Rc522_Init();
 	
-	delay_ms(1000); //等待语音读取完成
+	delay_ms(1000); //等待语音读完
 	delay_ms(1000);
 	delay_ms(1000);
 	delay_ms(1000);

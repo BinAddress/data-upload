@@ -2,6 +2,7 @@
 #include "usart.h"	  
 #include "delay.h"
 #include "sim.h"
+#include <stdlib.h>
 #include <string.h>
 
 #define GPS_REC_LEN  			200  	//定义最大接收字节数 200
@@ -114,6 +115,7 @@ char gpsbuf[30];
 //打印分析完成的GPS数据
 void printGpsBuffer(void)  
 {
+	double num;
 	if (Save_Data.isParseData)
 	{
 		Save_Data.isParseData = false;
@@ -127,20 +129,32 @@ void printGpsBuffer(void)
 		{
 			Save_Data.isUsefull = false;
 				
-			strcpy(gpsbuf,"latitude,");
-			strcpy(&gpsbuf[9],Save_Data.latitude);
+//			strcpy(gpsbuf,"latitude,");
+//			strcpy(&gpsbuf[9],Save_Data.latitude);
+//			Send_TCP_IP(gpsbuf);
+//			printf("%s\r\n",gpsbuf);	
+			
+			
+			num = GSP_Data_Change(Save_Data.latitude); //经纬度转换
+			sprintf(gpsbuf,"latitude,%f",num);
 			Send_TCP_IP(gpsbuf);
-			printf("%s\r\n",gpsbuf);			
+			printf("%s\r\n",gpsbuf);	
+			
 
 			strcpy(gpsbuf,"N_S,");
 			strcpy(&gpsbuf[4],Save_Data.N_S);
 			Send_TCP_IP(gpsbuf);
 			printf("%s\r\n",gpsbuf);			
 					
-			strcpy(gpsbuf,"longitude,");
-			strcpy(&gpsbuf[10],Save_Data.longitude);
+//			strcpy(gpsbuf,"longitude,");
+//			strcpy(&gpsbuf[10],Save_Data.longitude);
+//			Send_TCP_IP(gpsbuf);
+//			printf("%s\r\n",gpsbuf);
+
+			num = GSP_Data_Change(Save_Data.longitude); //经纬度转换
+			sprintf(gpsbuf,"longitude,%f",num);
 			Send_TCP_IP(gpsbuf);
-			printf("%s\r\n",gpsbuf);	
+			printf("%s\r\n",gpsbuf);			
 			
 			strcpy(gpsbuf,"E_W,");
 			strcpy(&gpsbuf[4],Save_Data.E_W);
@@ -152,7 +166,40 @@ void printGpsBuffer(void)
 		{
 			printf("GPS DATA is not usefull!\r\n");
 		}
-		
 	}
 }
 
+//GPS 经纬度转换
+double GSP_Data_Change(char *data)
+{
+	double number = 0;
+	char str[5] = {0};
+	
+	char *p = str;
+	char *p_num = NULL;
+	
+	
+	p_num = strstr(data,".");
+	if(p_num != NULL)
+	{
+		p_num -= 2;
+		number = atof(p_num); //取小数
+		number /=60;
+		
+		while(data != (p_num)) //取整数
+		{
+			*p = *data;
+			
+			p++;
+			data++;
+		}
+		
+		number += atoi(str);
+		
+		return number;
+	}
+	else
+	{
+		return 0;
+	}
+}

@@ -1,5 +1,5 @@
 Dependencies for Project 'USART', Target 'USART': (DO NOT MODIFY !)
-F (.\main.c)(0x5A5715AF)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\KEY -I..\SYSTEM\dma -I..\HARDWARE\GPS -I..\HARDWARE\BMP180 -I..\SYSTEM\iic -I..\HARDWARE\SIM -I..\SYSTEM\time -I..\HARDWARE\RFID -I..\SYSTEM\CAN -I..\HARDWARE\MPU6050 -I..\HARDWARE\MPU6050\eMPL -I..\HARDWARE\SOUND-I "C:\Users\15259\Desktop\YouNong upload\USER\RTE"-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DUSE_FULL_ASSERT-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
+F (.\main.c)(0x5A572336)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\KEY -I..\SYSTEM\dma -I..\HARDWARE\GPS -I..\HARDWARE\BMP180 -I..\SYSTEM\iic -I..\HARDWARE\SIM -I..\SYSTEM\time -I..\HARDWARE\RFID -I..\SYSTEM\CAN -I..\HARDWARE\MPU6050 -I..\HARDWARE\MPU6050\eMPL -I..\HARDWARE\SOUND-I "C:\Users\15259\Desktop\YouNong upload\USER\RTE"-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DUSE_FULL_ASSERT-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
 I (..\HARDWARE\LED\led.h)(0x5A50915A)
 I (..\SYSTEM\sys\sys.h)(0x550F951B)
 I (..\USER\stm32f10x.h)(0x4D783CB4)
@@ -34,7 +34,7 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
 I (..\SYSTEM\delay\delay.h)(0x555AC82B)
 I (..\HARDWARE\KEY\key.h)(0x550A8567)
-I (..\HARDWARE\GPS\gps.h)(0x5A4F7CCE)
+I (..\HARDWARE\GPS\gps.h)(0x5A571CF8)
 I (..\SYSTEM\iic\iic.h)(0x5A4F88AE)
 I (..\HARDWARE\BMP180\bmp.h)(0x5A126366)
 I (..\HARDWARE\SIM\sim.h)(0x5A50AAAA)
@@ -178,8 +178,8 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
 I (..\HARDWARE\KEY\key.h)(0x550A8567)
 I (..\SYSTEM\delay\delay.h)(0x555AC82B)
-F (..\HARDWARE\GPS\gps.c)(0x5A50ED2C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\KEY -I..\SYSTEM\dma -I..\HARDWARE\GPS -I..\HARDWARE\BMP180 -I..\SYSTEM\iic -I..\HARDWARE\SIM -I..\SYSTEM\time -I..\HARDWARE\RFID -I..\SYSTEM\CAN -I..\HARDWARE\MPU6050 -I..\HARDWARE\MPU6050\eMPL -I..\HARDWARE\SOUND-I "C:\Users\15259\Desktop\YouNong upload\USER\RTE"-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DUSE_FULL_ASSERT-o ..\obj\gps.o --omf_browse ..\obj\gps.crf --depend ..\obj\gps.d)
-I (..\HARDWARE\GPS\gps.h)(0x5A4F7CCE)
+F (..\HARDWARE\GPS\gps.c)(0x5A57230E)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\KEY -I..\SYSTEM\dma -I..\HARDWARE\GPS -I..\HARDWARE\BMP180 -I..\SYSTEM\iic -I..\HARDWARE\SIM -I..\SYSTEM\time -I..\HARDWARE\RFID -I..\SYSTEM\CAN -I..\HARDWARE\MPU6050 -I..\HARDWARE\MPU6050\eMPL -I..\HARDWARE\SOUND-I "C:\Users\15259\Desktop\YouNong upload\USER\RTE"-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DUSE_FULL_ASSERT-o ..\obj\gps.o --omf_browse ..\obj\gps.crf --depend ..\obj\gps.d)
+I (..\HARDWARE\GPS\gps.h)(0x5A571CF8)
 I (..\SYSTEM\sys\sys.h)(0x550F951B)
 I (..\USER\stm32f10x.h)(0x4D783CB4)
 I (..\CORE\core_cm3.h)(0x4D523B58)
@@ -213,6 +213,7 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
 I (..\SYSTEM\delay\delay.h)(0x555AC82B)
 I (..\HARDWARE\SIM\sim.h)(0x5A50AAAA)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 F (..\HARDWARE\BMP180\bmp.c)(0x5A50671A)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\KEY -I..\SYSTEM\dma -I..\HARDWARE\GPS -I..\HARDWARE\BMP180 -I..\SYSTEM\iic -I..\HARDWARE\SIM -I..\SYSTEM\time -I..\HARDWARE\RFID -I..\SYSTEM\CAN -I..\HARDWARE\MPU6050 -I..\HARDWARE\MPU6050\eMPL -I..\HARDWARE\SOUND-I "C:\Users\15259\Desktop\YouNong upload\USER\RTE"-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DUSE_FULL_ASSERT-o ..\obj\bmp.o --omf_browse ..\obj\bmp.crf --depend ..\obj\bmp.d)
 I (..\HARDWARE\BMP180\BMP.h)(0x5A126366)
@@ -571,7 +572,7 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x5051A0AE)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
 I (..\SYSTEM\delay\delay.h)(0x555AC82B)
-I (..\HARDWARE\GPS\gps.h)(0x5A4F7CCE)
+I (..\HARDWARE\GPS\gps.h)(0x5A571CF8)
 I (..\HARDWARE\SIM\sim.h)(0x5A50AAAA)
 F (..\SYSTEM\dma\dma.c)(0x5A4F710D)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\KEY -I..\SYSTEM\dma -I..\HARDWARE\GPS -I..\HARDWARE\BMP180 -I..\SYSTEM\iic -I..\HARDWARE\SIM -I..\SYSTEM\time -I..\HARDWARE\RFID -I..\SYSTEM\CAN -I..\HARDWARE\MPU6050 -I..\HARDWARE\MPU6050\eMPL -I..\HARDWARE\SOUND-I "C:\Users\15259\Desktop\YouNong upload\USER\RTE"-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DUSE_FULL_ASSERT-o ..\obj\dma.o --omf_browse ..\obj\dma.crf --depend ..\obj\dma.d)
 I (..\SYSTEM\sys\sys.h)(0x550F951B)
